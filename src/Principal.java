@@ -2,28 +2,34 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Principal {
     public static void main(String[] args) {
         List<Funcionario> funcionarios = inserirFuncionarios();
-        imprimirFuncionarios(funcionarios);
+        funcionarios.forEach(System.out::println);
+
         atualizarSalario(funcionarios);
         removerFunciocario(funcionarios, "João");
-        imprimirFuncionarios(funcionarios);
+        funcionarios.forEach(System.out::println);
+
+        Map<String, List<Funcionario>> porFuncao = agruparFuncionariosPorFuncao(funcionarios);
+        if (porFuncao != null){
+            porFuncao.forEach((s, f) -> {
+                System.out.println(s + ": " + f);
+            });
+        }
     }
 
     public static List<Funcionario> inserirFuncionarios(){
         List<Funcionario> funcionarios = new ArrayList<>();
-        Funcionario funcionario = new Funcionario();
+        Funcionario funcionario;
 
         try(Scanner scanner = new Scanner(System.in)) {
             System.out.println("\n----- Inserindo funcionários -----");
 
             while (true) {
+                funcionario = new Funcionario();
                 System.out.println("Nome do funcionário: ");
                 funcionario.setNome(scanner.nextLine());
 
@@ -80,13 +86,8 @@ public class Principal {
         return true;
     }
 
-
     public static void removerFunciocario(List<Funcionario> funcionarios, String nome){
         funcionarios.removeIf(funcionario -> funcionario.getNome().equals(nome));
-    }
-
-    public static void imprimirFuncionarios(List<Funcionario> funcionarios) {
-        funcionarios.forEach(System.out::println);
     }
 
     public static void atualizarSalario(List<Funcionario> funcionarios){
@@ -103,4 +104,17 @@ public class Principal {
         }
     }
 
+    public static Map<String, List<Funcionario>> agruparFuncionariosPorFuncao(List<Funcionario> funcionarios){
+        if (funcionarios.isEmpty()) {
+            return null;
+        }
+
+        Map<String, List<Funcionario>> map = new HashMap<>();
+        funcionarios.forEach(funcionario -> {
+            map.computeIfAbsent(funcionario.getFuncao(), k -> new LinkedList<>());
+            map.get(funcionario.getFuncao()).add(funcionario);
+        });
+
+        return map;
+    }
 }

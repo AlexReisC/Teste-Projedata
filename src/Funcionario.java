@@ -46,7 +46,7 @@ public class Funcionario extends Pessoa {
         return "Funcionario: " + this.getNome() +
                 "| Data de Nascimento: " + dataFormatada +
                 "| Salario: " + salarioFormatado +
-                "| Funcao: '" + funcao + "\n";
+                "| Funcao: " + funcao + "\n";
     }
 
 }
