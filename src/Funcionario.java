@@ -1,8 +1,10 @@
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class Funcionario extends Pessoa {
     private BigDecimal salario;
@@ -35,11 +37,16 @@ public class Funcionario extends Pessoa {
 
     @Override
     public String toString() {
-        String salarioFormatado = salario.toString().formatted(new DecimalFormat("#.###,00"));
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.of("pt", "BR"));
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00", symbols);
+
+        String salarioFormatado = decimalFormat.format(salario);
         String dataFormatada = this.getDataNascimento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
         return "Funcionario: " + this.getNome() +
-                ", Data de Nascimento: " + dataFormatada +
-                ", Salario: " + salarioFormatado +
-                ", Funcao: '" + funcao + "\n";
+                "| Data de Nascimento: " + dataFormatada +
+                "| Salario: " + salarioFormatado +
+                "| Funcao: '" + funcao + "\n";
     }
+
 }
