@@ -9,6 +9,9 @@ public abstract class Pessoa {
         this.dataNascimento = dataNascimento;
     }
 
+    public Pessoa() {
+    }
+
     public String getNome() {
         return nome;
     }
