@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -9,6 +10,10 @@ import java.util.Scanner;
 public class Principal {
     public static void main(String[] args) {
         List<Funcionario> funcionarios = inserirFuncionarios();
+        imprimirFuncionarios(funcionarios);
+        atualizarSalario(funcionarios);
+        removerFunciocario(funcionarios, "João");
+        imprimirFuncionarios(funcionarios);
     }
 
     public static List<Funcionario> inserirFuncionarios(){
@@ -73,6 +78,29 @@ public class Principal {
             return false;
         }
         return true;
+    }
+
+
+    public static void removerFunciocario(List<Funcionario> funcionarios, String nome){
+        funcionarios.removeIf(funcionario -> funcionario.getNome().equals(nome));
+    }
+
+    public static void imprimirFuncionarios(List<Funcionario> funcionarios) {
+        funcionarios.forEach(System.out::println);
+    }
+
+    public static void atualizarSalario(List<Funcionario> funcionarios){
+        if (funcionarios.isEmpty()) {
+            return;
+        }
+
+        BigDecimal aumento;
+        BigDecimal salarioFinal;
+        for (Funcionario funcionario : funcionarios) {
+            aumento = funcionario.getSalario().multiply(BigDecimal.valueOf(0.1));
+            salarioFinal = funcionario.getSalario().add(aumento);
+            funcionario.setSalario(salarioFinal);
+        }
     }
 
 }
